@@ -1,4 +1,4 @@
-package com.assistant.absolut.test.kinopoisk.ui.theme
+package com.assistant.absolut.test.kinopoisk.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
