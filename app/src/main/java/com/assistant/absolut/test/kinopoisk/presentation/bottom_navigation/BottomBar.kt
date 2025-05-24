@@ -1,42 +1,117 @@
 package com.assistant.absolut.test.kinopoisk.presentation.bottom_navigation
 
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.NavGraphs
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.appCurrentDestinationAsState
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.destinations.Destination
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.startAppDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.BottomNavSelected
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.BottomNavUnselected
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkBackground
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.PaddingTopBottomNavItem
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.SizeImgBottomNav
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.TextBottomNav
+
 
 @Composable
 fun BottomBar(
-    navigator: DestinationsNavigator,
-    navController: NavController
+    navController: NavController,
+    onDestinationSelected: (BottomBarDestinationUiModel) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val currentDestination: Destination? = navController.appCurrentDestinationAsState().value
         ?: NavGraphs.root.startAppDestination
 
-    NavigationBar {
-        BottomBarDestination.entries.forEach { destination ->
-            NavigationBarItem(
-                selected = currentDestination == destination.direction,
-                onClick = {
-                    navigator.navigate(destination.direction) {
-                        launchSingleTop = true
-                    }
-                },
-                icon = {
-                    Icon(
-                        imageVector = destination.icon,
-                        contentDescription = ""
-                    )
-                },
-                label = { Text(stringResource(destination.label)) }
+    HorizontalDivider()
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = PaddingTopBottomNavItem)
+            .navigationBarsPadding()
+            .background(DarkBackground),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BottomBarDestinationUiModel.entries.forEach { destination ->
+            BottomBarItem(
+                destination = destination,
+                isSelected = currentDestination == destination.direction,
+                onClick = { onDestinationSelected(destination) },
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun BottomBarItem(
+    destination: BottomBarDestinationUiModel,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+
+    val scale by animateFloatAsState(
+        targetValue = if (isSelected) 1.1f else 1f,
+        animationSpec = tween(durationMillis = 200),
+        label = ""
+    )
+
+    Box(
+        modifier = modifier
+            .scale(scale)
+            .clickable(
+                onClick = onClick,
+                interactionSource = interactionSource,
+                indication = null
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(
+                    id = if (isSelected) destination.filledIcon else destination.outlinedIcon
+                ),
+                contentDescription = null,
+                modifier = Modifier.size(SizeImgBottomNav),
+                colorFilter = ColorFilter.tint(
+                    if (isSelected) BottomNavSelected else BottomNavUnselected
+                )
+            )
+            Text(
+                text = stringResource(destination.label),
+                color = if (isSelected) BottomNavSelected else BottomNavUnselected,
+                fontSize = TextBottomNav
             )
         }
     }

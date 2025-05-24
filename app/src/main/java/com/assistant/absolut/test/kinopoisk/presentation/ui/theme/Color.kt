@@ -9,3 +9,17 @@ val Pink80 = Color(0xFFEFB8C8)
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
+
+
+val DarkBackground = Color(0xFF121212)
+val BottomNavSelected = Color(0xFFFFA500)
+val BottomNavUnselected = Color(0xFF888888)
+val DarkText = Color(0xFFE0E0E0)
+val DarkError = Color(0xFFD32F2F)
+val CardContentTextColor = Color(0xFFFFFFFF)
+
+
+val HeartGradientColors = listOf(
+    Color(0xFFE65100),
+    BottomNavSelected
+)

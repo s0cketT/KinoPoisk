@@ -3,4 +3,6 @@
     <string name="home_screen">Главная</string>
     <string name="search_screen">Поиск</string>
     <string name="profile_screen">Профиль</string>
+    <string name="error_no_internet">Нет интернета</string>
+    <string name="error_api">Нет данных</string>
 </resources>
