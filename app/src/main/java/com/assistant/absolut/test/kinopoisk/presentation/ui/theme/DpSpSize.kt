@@ -9,5 +9,8 @@ val SizeImgBottomNav = 20.dp
 val PaddingTopBottomNavItem = 8.dp
 val SizeLoadIconDp = 64.dp
 
-val FilmNameHomeScreen = 16.sp
-val FilmInfoHomeScreen = 12.sp
+val Title1 = 16.sp
+val Title2 = 14.sp
+val Title3 = 12.sp
+val Padding = 8.dp
+val SizeImg = 30.dp

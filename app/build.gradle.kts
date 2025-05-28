@@ -74,6 +74,7 @@ dependencies {
     //UI
     val coil_version = "2.4.0"
     implementation("io.coil-kt:coil-compose:$coil_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
 
     //Compose Destination
     val destination_version = "1.11.9"

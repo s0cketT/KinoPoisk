@@ -1,4 +1,4 @@
-package com.assistant.absolut.test.kinopoisk.presentation
+package com.assistant.absolut.test.kinopoisk.presentation.extensions
 
 import com.assistant.absolut.test.kinopoisk.R
 import com.assistant.absolut.test.kinopoisk.domain.model.ExceptionDomainModel

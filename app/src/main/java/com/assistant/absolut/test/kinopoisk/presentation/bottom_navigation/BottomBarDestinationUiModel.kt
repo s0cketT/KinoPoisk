@@ -2,9 +2,9 @@ package com.assistant.absolut.test.kinopoisk.presentation.bottom_navigation
 
 import androidx.annotation.StringRes
 import com.assistant.absolut.test.kinopoisk.R
-import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.destinations.HomeScreenDestination
-import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.destinations.ProfileScreenDestination
-import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.destinations.SearchScreenDestination
+import com.assistant.absolut.test.kinopoisk.presentation.destinations.HomeScreenDestination
+import com.assistant.absolut.test.kinopoisk.presentation.destinations.ProfileScreenDestination
+import com.assistant.absolut.test.kinopoisk.presentation.destinations.SearchScreenDestination
 import com.ramcosta.composedestinations.spec.Direction
 
 enum class BottomBarDestinationUiModel(

@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import com.assistant.absolut.test.kinopoisk.presentation.bottom_navigation.BottomBar
-import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.NavGraphs
+import com.assistant.absolut.test.kinopoisk.presentation.destinations.Destination
+import com.assistant.absolut.test.kinopoisk.presentation.destinations.HomeScreenDestination
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.KinopoiskTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.utils.toDestinationsNavigator
@@ -22,19 +24,23 @@ class MainActivity : ComponentActivity() {
         setContent {
             KinopoiskTheme {
                 val navController = rememberNavController()
+                val currentDestination: Destination = navController.appCurrentDestinationAsState().value
+                    ?: NavGraphs.root.startAppDestination
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         BottomBar(
-                            navController = navController,
+                            currentDestination = currentDestination,
                             onDestinationSelected = { destination ->
                                 navController.toDestinationsNavigator().navigate(
                                     destination.direction,
-                                    builder = { launchSingleTop = true }
+                                    navOptions = NavOptions.Builder().apply {
+                                        setPopUpTo(HomeScreenDestination.route, false)
+                                        setLaunchSingleTop(true)
+                                    }.build(),
                                 )
-                            },
-
+                            }
                         )
                     }
                 ) { innerPadding ->
@@ -48,5 +54,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 

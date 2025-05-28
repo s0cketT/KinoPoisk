@@ -25,11 +25,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
-import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.NavGraphs
-import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.appCurrentDestinationAsState
-import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.destinations.Destination
-import com.assistant.absolut.test.kinopoisk.presentation.home_screen.components.startAppDestination
+import com.assistant.absolut.test.kinopoisk.presentation.destinations.Destination
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.BottomNavSelected
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.BottomNavUnselected
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkBackground
@@ -38,14 +34,13 @@ import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.SizeImgBottomN
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.TextBottomNav
 
 
+
 @Composable
 fun BottomBar(
-    navController: NavController,
+    currentDestination: Destination,
     onDestinationSelected: (BottomBarDestinationUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val currentDestination: Destination? = navController.appCurrentDestinationAsState().value
-        ?: NavGraphs.root.startAppDestination
 
     HorizontalDivider()
 

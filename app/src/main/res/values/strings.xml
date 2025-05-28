@@ -5,4 +5,26 @@
     <string name="profile_screen">Профиль</string>
     <string name="error_no_internet">Нет интернета</string>
     <string name="error_api">Нет данных</string>
+    <string name="year">Год: %d</string>
+    <string name="countries">Страны: %s</string>
+    <string name="genre">Жанр: %s</string>
+    <string name="slogan">Слоган: %s</string>
+    <string name="filmLength">Время: %s</string>
+    <string name="age">Возраст: %s</string>
+    <string name="rating">Рейтинг: %s</string>
+    <string name="type">Тип: %s</string>
+    <string name="short_description">Краткое описание: %s</string>
+    <string name="watch_on_kinopoisk">Смотреть на кинопоиске</string>
+    <string name="assess">Оценить</string>
+    <string name="change_assess">Изменить оценку</string>
+    <string name="delete_assess">Удалить оценку</string>
+    <string name="assess_write">Введите оценку</string>
+    <string name="my_assess">Моя оценка</string>
+
+    <string name="type_film">Фильм</string>
+    <string name="type_video">Видео</string>
+    <string name="type_tv_series">Сериал</string>
+    <string name="type_mini_series">Мини-сериал</string>
+    <string name="type_tv_show">ТВ-шоу</string>
+
 </resources>

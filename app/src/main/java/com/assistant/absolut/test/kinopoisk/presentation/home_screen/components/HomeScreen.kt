@@ -2,6 +2,7 @@ package com.assistant.absolut.test.kinopoisk.presentation.home_screen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,8 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.assistant.absolut.test.kinopoisk.R
+import com.assistant.absolut.test.kinopoisk.data.common.Constants
 import com.assistant.absolut.test.kinopoisk.domain.model.FilmsDomainModel
 import com.assistant.absolut.test.kinopoisk.presentation.components.CustomLoader
+import com.assistant.absolut.test.kinopoisk.presentation.components.mockFilm
+import com.assistant.absolut.test.kinopoisk.presentation.destinations.FilmDetailsScreenDestination
+
+import com.assistant.absolut.test.kinopoisk.presentation.home_screen.HomeEvent
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.HomeIntent
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.HomeState
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.HomeViewModel
@@ -36,11 +43,13 @@ import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.CardContentTex
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkBackground
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkError
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkText
-import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.FilmInfoHomeScreen
-import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.FilmNameHomeScreen
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title3
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title1
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
 import org.koin.androidx.compose.koinViewModel
 
 @RootNavGraph(start = true)
@@ -51,6 +60,13 @@ fun HomeScreen(navigator: DestinationsNavigator) {
     val homeViewModel = koinViewModel<HomeViewModel>()
     val state by homeViewModel.state.collectAsStateWithLifecycle()
     val intent by remember { mutableStateOf(homeViewModel::processIntent) }
+    val event: Flow<HomeEvent> by remember { mutableStateOf(homeViewModel.event) }
+
+    LaunchedEffect(Unit) {
+        event.filterIsInstance<HomeEvent.NavigateToFilmDetails>().collect { event ->
+            navigator.navigate(FilmDetailsScreenDestination(filmId = event.filmId))
+        }
+    }
 
     UI(state = state, intent = intent)
 }
@@ -69,6 +85,30 @@ private fun UI(
         contentAlignment = Alignment.TopCenter
     ) {
         when {
+            state.films.isNotEmpty() -> {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    itemsIndexed(state.films, key = { _, film -> film.id }) { index, film ->
+
+                        FilmItem(film = film,
+                            onFilmClick = { filmId ->
+                                intent(HomeIntent.NavigateToFilmDetailsScreen(filmId))
+                            })
+                        HorizontalDivider()
+
+                        if (index >= state.films.size - state.pageSize) {
+                            intent(HomeIntent.LoadingNextPages)
+                        }
+                    }
+
+                    if (state.isLoading) {
+                        item {
+                            CustomLoader()
+                        }
+                    }
+                }
+
+            }
+
             state.isLoading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -78,26 +118,6 @@ private fun UI(
                 }
             }
 
-            state.films.isNotEmpty() -> {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    itemsIndexed(state.films, key = { _, film -> film.id }) { index, film ->
-
-                        FilmItem(film)
-                        HorizontalDivider()
-
-                        if (index >= state.films.size - state.pageSize) {
-                            intent(HomeIntent.LoadingNextPages)
-                        }
-                    }
-
-                    if (state.isAppending) {
-                        item {
-                            CustomLoader()
-                        }
-                    }
-                }
-
-            }
 
             state.error != null -> {
                 Text(
@@ -120,19 +140,14 @@ private fun UI(
 @Preview
 @Composable
 private fun FilmItem(
-    film: FilmsDomainModel.Film = FilmsDomainModel.Film(
-        id = 0,
-        name = "",
-        countries = emptyList(),
-        ratingKinopoisk = 0.2.toFloat(),
-        year = 0,
-        posterUrlPreview = "",
-    )
+    film: FilmsDomainModel.Film = mockFilm,
+    onFilmClick: (Int) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
+            .clickable { onFilmClick(film.id) }
     ) {
         Box() {
             Image(
@@ -147,9 +162,11 @@ private fun FilmItem(
             Box(
                 modifier = Modifier
                     .background(
-                        if (film.ratingKinopoisk <= 3.0) Color.Red
-                        else if (film.ratingKinopoisk <= 7.0) Color.Gray
-                        else Color.Green,
+                        color = when {
+                            film.ratingKinopoisk <= Constants.Three -> Color.Red
+                            film.ratingKinopoisk <= Constants.Seven -> Color.Gray
+                            else -> Color.Green
+                        },
                         shape = RoundedCornerShape(8.dp)
                     )
                     .size(40.dp, 25.dp),
@@ -158,7 +175,7 @@ private fun FilmItem(
                 Text(
                     text = "${film.ratingKinopoisk}",
                     color = CardContentTextColor,
-                    fontSize = FilmInfoHomeScreen,
+                    fontSize = Title3,
                     modifier = Modifier.align(Alignment.Center),
                     fontWeight = FontWeight.ExtraBold,
                 )
@@ -166,23 +183,22 @@ private fun FilmItem(
 
         }
 
-
         Column {
             Text(
                 text = film.name,
                 color = DarkText,
-                fontSize = FilmNameHomeScreen
+                fontSize = Title1
             )
             Text(
-                text = "Год: ${film.year}",
+                text = stringResource(id = R.string.year, film.year),
                 color = CardContentTextColor,
-                fontSize = FilmInfoHomeScreen
+                fontSize = Title3
             )
 
             Text(
-                text = "Страны: ${film.countries.joinToString()}",
+                text = stringResource(id = R.string.countries, film.countries.joinToString()),
                 color = CardContentTextColor,
-                fontSize = FilmInfoHomeScreen
+                fontSize = Title3
             )
 
         }
