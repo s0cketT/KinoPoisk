@@ -31,9 +31,9 @@ import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ButtonColorAss
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ButtonColorChangeAssess
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ButtonColorDeleteAssess
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.CardBackgroundColor
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkText
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Padding
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.SizeImg
-import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.TextColor
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title1
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title2
 
@@ -44,7 +44,7 @@ fun DialogUiFilmDetails(
     name: String = "",
     year: Int = 0,
     tempAssess: String = "",
-    assess: String? = null,
+    assess: Int? = null,
     intent: (FilmDetailsIntent) -> Unit = {}
 ) {
 
@@ -65,7 +65,7 @@ fun DialogUiFilmDetails(
                 Text(
                     stringResource(id = R.string.assess),
                     fontSize = Title1,
-                    color = TextColor,
+                    color = DarkText,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.align(Alignment.Center)
                 )
@@ -93,14 +93,14 @@ fun DialogUiFilmDetails(
             Text(
                 name,
                 fontSize = Title1,
-                color = TextColor,
+                color = DarkText,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
                 "${year}",
                 fontSize = Title2,
-                color = TextColor,
+                color = DarkText,
             )
 
 
@@ -133,7 +133,7 @@ fun DialogUiFilmDetails(
                         else -> stringResource(id = R.string.change_assess)
                     },
                     fontSize = Title2,
-                    color = TextColor,
+                    color = DarkText,
                 )
             }
         }

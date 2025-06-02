@@ -10,6 +10,6 @@ object Constants {
     const val FILMS_API = "api/v2.2/films"
     const val FILM_DETAILS_API = "api/v2.2/films/{id}"
 
-    const val Three = 3
-    const val Seven = 7
+    const val FILM_SCORE_THREE = 3
+    const val FILM_SCORE_SEVEN = 7
 }

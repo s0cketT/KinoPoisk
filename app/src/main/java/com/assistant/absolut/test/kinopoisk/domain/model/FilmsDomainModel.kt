@@ -11,6 +11,9 @@ data class FilmsDomainModel(
         val countries: List<String>,
         val ratingKinopoisk: Float,
         val year: Int,
-        val posterUrlPreview: String
+        val posterUrlPreview: String,
+
+        val assess: Int?,
+        val isBookmark: Boolean
     )
 }

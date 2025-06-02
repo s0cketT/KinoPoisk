@@ -2,6 +2,7 @@ package com.assistant.absolut.test.kinopoisk
 
 import android.app.Application
 import com.assistant.absolut.test.kinopoisk.di.appModule
+import com.assistant.absolut.test.kinopoisk.di.databaseModule
 import com.assistant.absolut.test.kinopoisk.di.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -15,7 +16,7 @@ class App : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(networkModule, appModule)
+            modules(networkModule, appModule, databaseModule)
         }
     }
 }

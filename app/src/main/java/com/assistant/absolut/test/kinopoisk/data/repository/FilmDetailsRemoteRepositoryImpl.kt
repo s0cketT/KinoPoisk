@@ -10,7 +10,7 @@ import com.tasklist.data.extensions.mapToExceptionDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class FilmDetailsRepositoryImpl(
+class FilmDetailsRemoteRepositoryImpl(
     private val filmDetailsApi: IFilmDetailsApi,
     private val mapper: MapFilmDetailsToDomain
 ) : IFilmDetailsRepository {

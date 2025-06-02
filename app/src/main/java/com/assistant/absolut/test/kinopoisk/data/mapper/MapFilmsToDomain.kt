@@ -2,6 +2,7 @@ package com.assistant.absolut.test.kinopoisk.data.mapper
 
 import com.assistant.absolut.test.kinopoisk.data.model.FilmsApiModel
 import com.assistant.absolut.test.kinopoisk.domain.model.FilmsDomainModel
+import com.assistant.absolut.test.kinopoisk.presentation.extensions.log
 
 
 class MapFilmsToDomain {
@@ -16,14 +17,18 @@ class MapFilmsToDomain {
                         countries = film.countries.mapNotNull { it.country },
                         ratingKinopoisk = film.ratingKinopoisk?.toFloat()!!,
                         year = film.year?.toInt()!!,
-                        posterUrlPreview = film.posterUrlPreview!!
+                        posterUrlPreview = film.posterUrlPreview!!,
+                        assess = null,
+                        isBookmark = false
                     )
                 }.getOrElse {
+                    log("FilmsDomainModel.Film is null")
                     null
                 }
             }
         )
     }.getOrElse {
+        log("FilmsDomainModel is null")
         null
     }
 }

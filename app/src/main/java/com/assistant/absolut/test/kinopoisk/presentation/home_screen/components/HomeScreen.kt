@@ -21,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,17 +33,19 @@ import com.assistant.absolut.test.kinopoisk.domain.model.FilmsDomainModel
 import com.assistant.absolut.test.kinopoisk.presentation.components.CustomLoader
 import com.assistant.absolut.test.kinopoisk.presentation.components.mockFilm
 import com.assistant.absolut.test.kinopoisk.presentation.destinations.FilmDetailsScreenDestination
-
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.HomeEvent
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.HomeIntent
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.HomeState
 import com.assistant.absolut.test.kinopoisk.presentation.home_screen.HomeViewModel
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.CardContentTextColor
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ColorAssessBad
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ColorAssessGood
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ColorAssessNormal
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkBackground
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkError
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkText
-import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title3
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title1
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title3
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -64,7 +65,13 @@ fun HomeScreen(navigator: DestinationsNavigator) {
 
     LaunchedEffect(Unit) {
         event.filterIsInstance<HomeEvent.NavigateToFilmDetails>().collect { event ->
-            navigator.navigate(FilmDetailsScreenDestination(filmId = event.filmId))
+            navigator.navigate(
+                FilmDetailsScreenDestination(
+                filmId = event.filmId,
+                assess = event.assess,
+                isBookmark = event.isBookmark
+            )
+            )
         }
     }
 
@@ -77,7 +84,6 @@ private fun UI(
     state: HomeState = HomeState(),
     intent: (HomeIntent) -> Unit = {}
 ) {
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -90,8 +96,12 @@ private fun UI(
                     itemsIndexed(state.films, key = { _, film -> film.id }) { index, film ->
 
                         FilmItem(film = film,
-                            onFilmClick = { filmId ->
-                                intent(HomeIntent.NavigateToFilmDetailsScreen(filmId))
+                            onFilmClick = { filmId, assess, isBookmark ->
+                                intent(HomeIntent.NavigateToFilmDetailsScreen(
+                                    filmId = filmId,
+                                    assess = assess,
+                                    isBookmark = isBookmark
+                                ))
                             })
                         HorizontalDivider()
 
@@ -141,13 +151,13 @@ private fun UI(
 @Composable
 private fun FilmItem(
     film: FilmsDomainModel.Film = mockFilm,
-    onFilmClick: (Int) -> Unit = {}
+    onFilmClick: (Int, Int?, Boolean) -> Unit = {_, _, _ ->}
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onFilmClick(film.id) }
+            .clickable { onFilmClick(film.id, film.assess, film.isBookmark) }
     ) {
         Box() {
             Image(
@@ -163,9 +173,9 @@ private fun FilmItem(
                 modifier = Modifier
                     .background(
                         color = when {
-                            film.ratingKinopoisk <= Constants.Three -> Color.Red
-                            film.ratingKinopoisk <= Constants.Seven -> Color.Gray
-                            else -> Color.Green
+                            film.ratingKinopoisk <= Constants.FILM_SCORE_THREE -> ColorAssessBad
+                            film.ratingKinopoisk <= Constants.FILM_SCORE_SEVEN -> ColorAssessNormal
+                            else -> ColorAssessGood
                         },
                         shape = RoundedCornerShape(8.dp)
                     )

@@ -1,11 +1,15 @@
 package com.assistant.absolut.test.kinopoisk.presentation.extensions
 
-fun Int?.toFilmLengthUi(): String = this?.let { minutes ->
+import com.assistant.absolut.test.kinopoisk.R
+
+fun Int?.toFilmLengthUi(): Int = this?.let { minutes ->
     val hours = minutes / 60
-    val remainingMinutes = minutes % 60
     if (hours > 0) {
-        "$hours ч $remainingMinutes мин"
+        R.string.filmLength_hours_minutes
     } else {
-        "$remainingMinutes мин"
+        R.string.filmLength_minutes
     }
-} ?: "—"
+} ?: R.string.dash
+
+
+

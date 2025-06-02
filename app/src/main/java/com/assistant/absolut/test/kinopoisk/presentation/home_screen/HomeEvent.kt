@@ -1,5 +1,5 @@
 package com.assistant.absolut.test.kinopoisk.presentation.home_screen
 
 sealed interface HomeEvent {
-    class NavigateToFilmDetails(val filmId: Int) : HomeEvent
+    class NavigateToFilmDetails(val filmId: Int, val assess: Int?, val isBookmark: Boolean) : HomeEvent
 }

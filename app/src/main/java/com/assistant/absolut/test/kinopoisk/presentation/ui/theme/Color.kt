@@ -16,9 +16,9 @@ val DarkBackground = Color(0xFF121212)
 val BottomNavSelected = Color(0xFFFFA500)
 val BottomNavUnselected = Color(0xFF888888)
 val DarkText = Color(0xFFE0E0E0)
+val DarkTextGray = Color.Gray
 val DarkError = Color(0xFFD32F2F)
 val CardContentTextColor = Color(0xFFFFFFFF)
-val TextColor = Color(0xFFFFFFFF)
 val ClickableTextColor = Color(0xFF2196F3)
 val CardBackgroundColor = Color(0xFF2E2E2E)
 val ButtonColorAssess = Color(0xFF009688)
@@ -44,3 +44,10 @@ val CustomTextSelectionColors = TextSelectionColors(
     backgroundColor = TextSelectionBackground,
     handleColor = TextSelectionHandle
 )
+
+val ColorAssessGood = Color(0xFF2DB60B)
+val ColorAssessNormal = Color.Gray
+val ColorAssessBad = Color.Red
+
+val BootonColorActive = Color(0xFFFFA500)
+val BootonColorInactive = Color(0xFF6B836B)

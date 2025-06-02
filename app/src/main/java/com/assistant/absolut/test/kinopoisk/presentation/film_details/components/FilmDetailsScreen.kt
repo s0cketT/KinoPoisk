@@ -42,11 +42,13 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun FilmDetailsScreen(
     navigator: DestinationsNavigator,
-    filmId: Int
+    filmId: Int,
+    assess: Int?,
+    isBookmark: Boolean
 ) {
 
     val filmDetailsViewModel =
-        koinViewModel<FilmDetailsViewModel>(parameters = { parametersOf(filmId) })
+        koinViewModel<FilmDetailsViewModel>(parameters = { parametersOf(filmId, assess, isBookmark) })
     val state by filmDetailsViewModel.state.collectAsStateWithLifecycle()
     val intent by remember { mutableStateOf(filmDetailsViewModel::processIntent) }
     val event: Flow<FilmDetailsEvent> by remember { mutableStateOf(filmDetailsViewModel.event) }
@@ -70,7 +72,7 @@ fun FilmDetailsScreen(
 @Preview
 @Composable
 private fun UI(
-    state: FilmDetailsState = FilmDetailsState(id = 0),
+    state: FilmDetailsState = FilmDetailsState(id = 0, assess = null, isBookmark = false),
     intent: (FilmDetailsIntent) -> Unit = {}
 ) {
 
@@ -126,6 +128,8 @@ private fun UI(
                     year = state.year,
                     genres = state.genres,
                     filmLength = state.filmLength,
+                    hours = state.hours,
+                    minutes = state.minutes,
                     ratingKinopoisk = state.ratingKinopoisk,
                     ratingAgeLimits = state.ratingAgeLimits,
                     type = state.type,

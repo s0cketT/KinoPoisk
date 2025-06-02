@@ -12,5 +12,6 @@ data class FilmDetailsDomainModel(
     val type: FilmTypeDomainModel,
     val ratingAgeLimits: Int?,
     val countries: List<String>,
-    val genres: List<String>
+    val genres: List<String>,
+    val ratingKinopoiskVoteCount: Int
 )

@@ -9,7 +9,11 @@
     <string name="countries">Страны: %s</string>
     <string name="genre">Жанр: %s</string>
     <string name="slogan">Слоган: %s</string>
-    <string name="filmLength">Время: %s</string>
+    <string name="film_length">Время: %s</string>
+    <string name="filmLength_hours_minutes">%s час %s минут</string>
+    <string name="filmLength_minutes">%s минут</string>
+    <string name="dash">—</string>
+    <string name="plus">%d+</string>
     <string name="age">Возраст: %s</string>
     <string name="rating">Рейтинг: %s</string>
     <string name="type">Тип: %s</string>
@@ -26,5 +30,10 @@
     <string name="type_tv_series">Сериал</string>
     <string name="type_mini_series">Мини-сериал</string>
     <string name="type_tv_show">ТВ-шоу</string>
+
+    <string name="film_watched">Просмотренные</string>
+    <string name="film_bookmark">Закладки</string>
+    <string name="film_length_watched_hours_minutes">%d:%d</string>
+    <string name="film_length_watched_minutes">0:%d</string>
 
 </resources>

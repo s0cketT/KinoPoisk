@@ -16,6 +16,7 @@ data class FilmDetailsApiModel(
     val ratingAgeLimits: String?,
     val countries: List<Country>,
     val genres: List<Genre>,
+    val ratingKinopoiskVoteCount: String?
 ) {
     data class Country(
         val country: String?

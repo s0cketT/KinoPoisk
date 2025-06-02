@@ -20,20 +20,23 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.assistant.absolut.test.kinopoisk.R
 import com.assistant.absolut.test.kinopoisk.data.common.Constants
 import com.assistant.absolut.test.kinopoisk.presentation.film_details.FilmDetailsIntent
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.BookmarkFav
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ColorAssessBad
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ColorAssessGood
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ColorAssessNormal
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkText
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Padding
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.SizeCircleAssess
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.SizeImg
-import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.TextColor
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title2
 
 @Preview
 @Composable
 fun TopBarFilmDetails(
-    assess: String? = null,
+    assess: Int? = null,
     isBookmark: Boolean = false,
     intent: (FilmDetailsIntent) -> Unit = {}
 ) {
@@ -56,7 +59,7 @@ fun TopBarFilmDetails(
             colorFilter = ColorFilter.tint(Color.Gray)
         )
 
-        if (!assess.isNullOrEmpty()) {
+        if (assess != null) {
             Column(
                 modifier = Modifier,
                 verticalArrangement = Arrangement.Center,
@@ -64,12 +67,12 @@ fun TopBarFilmDetails(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(30.dp)
+                        .size(SizeCircleAssess)
                         .background(
                             color = when {
-                                assess.toInt() <= Constants.Three -> Color.Red
-                                assess.toInt() <= Constants.Seven -> Color.Gray
-                                else -> Color.Green
+                                assess <= Constants.FILM_SCORE_THREE -> ColorAssessBad
+                                assess <= Constants.FILM_SCORE_SEVEN -> ColorAssessNormal
+                                else -> ColorAssessGood
                             },
                             shape = CircleShape
                         )
@@ -77,16 +80,16 @@ fun TopBarFilmDetails(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        assess,
+                        "$assess",
                         fontSize = Title2,
-                        color = TextColor,
+                        color = DarkText,
                     )
                 }
 
                 Text(
                     stringResource(id = R.string.my_assess),
                     fontSize = Title2,
-                    color = TextColor,
+                    color = DarkText,
                 )
             }
         } else {

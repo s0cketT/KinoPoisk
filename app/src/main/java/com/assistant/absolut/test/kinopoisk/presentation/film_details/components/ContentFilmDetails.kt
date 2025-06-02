@@ -25,8 +25,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.assistant.absolut.test.kinopoisk.R
 import com.assistant.absolut.test.kinopoisk.presentation.film_details.FilmDetailsIntent
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.ClickableTextColor
+import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.DarkText
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Padding
-import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.TextColor
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title1
 import com.assistant.absolut.test.kinopoisk.presentation.ui.theme.Title2
 import kotlinx.collections.immutable.ImmutableList
@@ -39,8 +39,10 @@ fun ContentFilmDetails(
     countries: ImmutableList<String> = persistentListOf(),
     year: Int = 0,
     genres: ImmutableList<String> = persistentListOf(),
-    filmLength: String = "",
-    ratingAgeLimits: String = "",
+    filmLength: Int = 0,
+    hours: Int? = 0,
+    minutes: Int? = 0,
+    ratingAgeLimits: Int? = null,
     ratingKinopoisk: Float = 0.0.toFloat(),
     type: Int = 0,
     name: String = "",
@@ -63,6 +65,8 @@ fun ContentFilmDetails(
             year = year,
             genres = genres,
             filmLength = filmLength,
+            hours = hours,
+            minutes = minutes,
             ratingAgeLimits = ratingAgeLimits,
             ratingKinopoisk = ratingKinopoisk,
             type = type,
@@ -87,8 +91,10 @@ private fun TopContent(
     countries: ImmutableList<String> = persistentListOf(),
     year: Int = 0,
     genres: ImmutableList<String> = persistentListOf(),
-    filmLength: String = "",
-    ratingAgeLimits: String = "",
+    filmLength: Int = 0,
+    hours: Int? = 0,
+    minutes: Int? = 0,
+    ratingAgeLimits: Int? = null,
     ratingKinopoisk: Float = 0.0.toFloat(),
     type: Int = 0
 ) {
@@ -116,44 +122,57 @@ private fun TopContent(
             Text(
                 stringResource(id = R.string.countries, countries.joinToString()),
                 fontSize = Title2,
-                color = TextColor
+                color = DarkText
             )
 
             Text(
                 stringResource(id = R.string.year, year),
                 fontSize = Title2,
-                color = TextColor
+                color = DarkText
             )
 
             Text(
                 stringResource(id = R.string.genre, genres.joinToString()),
                 fontSize = Title2,
-                color = TextColor
+                color = DarkText
             )
 
 
             Text(
-                stringResource(id = R.string.filmLength, filmLength),
+                stringResource(id =
+                R.string.film_length,
+                    when(filmLength) {
+                        R.string.filmLength_hours_minutes -> stringResource(id = R.string.filmLength_hours_minutes, hours!!, minutes!!)
+                        R.string.filmLength_minutes -> stringResource(id = R.string.filmLength_minutes, minutes!!)
+                        else -> stringResource(id = R.string.dash)
+                    }
+                ),
                 fontSize = Title2,
-                color = TextColor
+                color = DarkText
             )
 
             Text(
-                stringResource(id = R.string.age, ratingAgeLimits),
+                stringResource(
+                    id = R.string.age,
+                    when(ratingAgeLimits) {
+                        null -> stringResource(id = R.string.dash)
+                        else -> stringResource(id = R.string.plus, ratingAgeLimits)
+                    }
+                    ),
                 fontSize = Title2,
-                color = TextColor
+                color = DarkText
             )
 
             Text(
                 stringResource(id = R.string.rating, ratingKinopoisk),
                 fontSize = Title2,
-                color = TextColor
+                color = DarkText
             )
 
             Text(
                 stringResource(id = R.string.type, stringResource(id = type)),
                 fontSize = Title2,
-                color = TextColor
+                color = DarkText
             )
 
         }
@@ -175,7 +194,7 @@ private fun MiddleContent(
         name,
         fontSize = Title1,
         fontWeight = FontWeight.Bold,
-        color = TextColor
+        color = DarkText
     )
 
     Spacer(modifier = Modifier.size(10.dp))
@@ -183,7 +202,7 @@ private fun MiddleContent(
     Text(
         stringResource(id = R.string.slogan, slogan),
         fontSize = Title2,
-        color = TextColor
+        color = DarkText
     )
 
     Spacer(modifier = Modifier.size(10.dp))
@@ -191,7 +210,7 @@ private fun MiddleContent(
     Text(
         stringResource(id = R.string.short_description, shortDescription),
         fontSize = Title2,
-        color = TextColor
+        color = DarkText
     )
 
 
